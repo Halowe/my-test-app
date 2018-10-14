@@ -5,6 +5,7 @@ import { StaticQuery, graphql } from 'gatsby'
 
 import Header from './header'
 import './layout.css'
+import Footer from './Footer';
 
 const Layout = ({ children }) => (
   <StaticQuery
@@ -13,6 +14,16 @@ const Layout = ({ children }) => (
         site {
           siteMetadata {
             title
+            keywords
+            description
+          }
+        }
+        allContentfulLink {
+          edges {
+            node {
+              title
+              url
+            }
           }
         }
       }
@@ -22,14 +33,15 @@ const Layout = ({ children }) => (
         <Helmet
           title={data.site.siteMetadata.title}
           meta={[
-            { name: 'description', content: 'Sample' },
-            { name: 'keywords', content: 'sample, something' },
+            { name: 'description', content: data.site.siteMetadata.description },
+            { name: 'keywords', content: data.site.siteMetadata.keywords },
           ]}
         >
           <html lang="en" />
         </Helmet>
           <Header />
-          {children}
+          {children} 
+          <Footer data={data} />         
       </>
     )}
   />
